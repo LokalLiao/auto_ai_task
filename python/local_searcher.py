@@ -1,7 +1,7 @@
 import os
 from difflib import SequenceMatcher
 
-class LocalManager:
+class LocalSearcher:
 
     def search_files(self, query: str):
         results = []

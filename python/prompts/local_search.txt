@@ -1,0 +1,130 @@
+解析用户的本地文件操作请求。
+
+首先提取用户要求查找的文件名称：
+{{
+  "filename": "文件名称"
+}}
+
+filename 必须来自用户明确指定的文件名称，不要自行补充、推测、翻译或修改。
+
+如果用户只要求查找文件，则只返回 filename。
+
+如果用户要求找到文件后继续执行其他操作，则增加 steps。
+
+每个 step 必须包含：
+- action：Python 后续要调用的动作
+- 该 action 执行所需要的参数
+- description：说明该步骤的目的
+
+不要只用 description 描述参数。
+能够从用户输入中明确提取的参数，必须单独作为字段返回。
+
+例如：
+
+用户：
+帮我找 README 发给小美
+
+返回：
+{{
+  "filename": "README",
+  "steps": [
+    {{
+      "action": "find_contact",
+      "name": "小美",
+      "description": "在本地联系人列表中查找小美的邮箱地址"
+    }},
+    {{
+      "action": "send_email",
+      "description": "将找到的 README 文件发送到小美的邮箱"
+    }}
+  ]
+}}
+
+注意：
+
+用户没有提供邮箱地址时，不要猜测邮箱地址。
+
+find_contact 执行后会得到邮箱地址，该结果作为后续 send_email 的参数。
+
+如果用户直接提供了邮箱地址，则可以直接放入 send_email。
+
+例如：
+
+用户：
+帮我找 README 发到 xiaomei@gmail.com
+
+返回：
+{{
+  "filename": "README",
+  "steps": [
+    {{
+      "action": "send_email",
+      "email": "xiaomei@gmail.com",
+      "description": "将找到的 README 文件发送到 xiaomei@gmail.com"
+    }}
+  ]
+}}
+
+如果用户使用联系人姓名，则优先使用 find_contact 获取联系方式。
+
+如果一个操作需要前一个操作的结果，按照依赖关系排列 steps。
+
+例如：
+
+用户：
+帮我找 README 发给小美
+
+执行关系：
+
+find_contact
+    name = 小美
+    ↓
+得到 email
+    ↓
+send_email
+    email = 上一步得到的 email
+
+不要假设、编造或填写用户没有提供的信息。
+
+如果用户提供了明确参数，必须提取为独立字段。
+
+例如：
+
+用户：
+帮我找 README 发到 xiaomei@gmail.com
+
+必须得到：
+
+{{
+  "action": "send_email",
+  "email": "xiaomei@gmail.com"
+}}
+
+而不是只写：
+
+{{
+  "action": "send_email",
+  "description": "发送到小美邮箱"
+}}
+
+常用 action：
+
+find_contact
+read_file
+convert_file
+rename_file
+copy_file
+move_file
+delete_file
+send_email
+send_message
+summarize
+
+只返回合法 JSON。
+不要返回 Markdown。
+不要返回代码块。
+不要解释。
+
+用户输入：
+
+{USER_MESSAGE}

@@ -1,30 +1,39 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from openclaw_client import OpenClawClient
-from intent_dispatcher import IntentDispatcher
+from gemini_agent import GeminiAgent
+from action_dispatcher import ActionDispatcher
 import uvicorn
 
 app = FastAPI()
 #
+class TaskRequest(BaseModel):
+    key: str
+    message: str
+
 class ChatRequest(BaseModel):
     message: str
 #
-client = OpenClawClient()
-dispatcher = IntentDispatcher()
+gemini = GeminiAgent()
+dispatcher = ActionDispatcher()
 
-@app.post("/chat")
-def chat(request: ChatRequest):
-    intent = client.analyze(request.message)
-    result = dispatcher.dispatch(intent)
+@app.post("/task")
+def task_chat(request: TaskRequest):
+    _action = gemini.analyzer(request.key, request.message)
+    action_name = _action["action"]
+    _result = dispatcher.dispatch(_action)
+    #
     return {
         "code": 200,
-        "intent": intent,
-        "result": result
+        "action": action_name,
+        "result": _result
     }
 
 if __name__ == "__main__":
-    uvicorn.run(
-        app,
-        host="0.0.0.0",
-        port=8000
-    )
+    action = gemini.analyzer("local_search", "查找XXX文件")
+    result = dispatcher.dispatch(action)
+    print(result)
+    # uvicorn.run(
+    #     app,
+    #     host="0.0.0.0",
+    #     port=8000
+    # )

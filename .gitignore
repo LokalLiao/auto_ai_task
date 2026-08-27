@@ -1,6 +1,9 @@
 # OpenClaw 本地运行目录
 /openclaw/*
 
+#配置文件不上传
+python/config.json
+
 # 允许上传自己的说明/配置文件
 /openclaw/*
 !/openclaw/
