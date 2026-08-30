@@ -1,8 +1,0 @@
-pnpm openclaw gateway --help
-确认：OpenClaw Gateway 是 WebSocket Gateway，而且 CLI 自己提供了 gateway call 作为 RPC 调用入口。
-看 Gateway RPC 的具体调用格式：
-pnpm openclaw gateway call --help
-确定：不要直接让 Python 去调用 Gemini。
-当前版本支持什么参数：
-pnpm openclaw agent --help
-确认：Python Server 可以调用 OpenClaw 的 Agent，而不是自己再实现一套 Gemini 调用。
