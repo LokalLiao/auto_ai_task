@@ -1,3 +1,4 @@
+import '../views/locations_page.dart';
 import '../views/weather_page.dart';
 import 'package:flutter/material.dart';
 import '../views/setting_page.dart';
@@ -13,12 +14,10 @@ class AppNavigator {
         );
         break;
       case 'location':
-        /*Navigator.push(
+        Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (_) => const LocationPage(),
-          ),
-        );*/
+            MaterialPageRoute(builder: (_) => const LocationsPage())
+        );
         break;
       case 'weather':
         Navigator.push(
