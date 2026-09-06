@@ -33,16 +33,22 @@ const todoItem = MainMenuItem(
   icon: Icons.checklist,
 );
 
-const aiItem = MainMenuItem(
-  id: 'ai',
-  title: 'AI 助手',
-  icon: Icons.smart_toy,
-);
-
 const settingsItem = MainMenuItem(
   id: 'settings',
   title: '设置',
   icon: Icons.settings,
+);
+
+const emailAnalyzerItem = MainMenuItem(
+  id: 'email_analyzer',
+  title: 'Email AI分析',
+  icon: Icons.email,
+);
+
+const localSearchItem = MainMenuItem(
+  id: 'local_search',
+  title: '本地文件搜索',
+  icon: Icons.file_open_outlined,
 );
 
 //共用的item控件
@@ -139,9 +145,9 @@ class MainBottomMenu extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       children: [
         _buildMenuItem(
-          item: aiItem,
+          item: localSearchItem,
           onTap: () {
-            onItemTap(aiItem.id);
+            onItemTap(localSearchItem.id);
           },
         ),
         _buildMenuItem(

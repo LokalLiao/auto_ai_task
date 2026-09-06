@@ -1,3 +1,5 @@
+import 'package:AIAssistant/views/local_search_page.dart';
+
 import '../views/locations_page.dart';
 import '../views/weather_page.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,12 @@ class AppNavigator {
         Navigator.push(
             context,
             MaterialPageRoute(builder: (_) => const WeatherPage())
+        );
+        break;
+      case 'local_search':
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const LocalSearchPage())
         );
         break;
     }
